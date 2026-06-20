@@ -3,7 +3,6 @@ import AppLayout from './components/AppLayout';
 import Dashboard from './pages/Dashboard';
 import OperationPage from './pages/OperationPage';
 import ProcessingPage from './pages/ProcessingPage';
-import HistoryPage from './pages/HistoryPage';
 
 export default function App() {
   return (
@@ -12,7 +11,6 @@ export default function App() {
         <Route index element={<Dashboard />} />
         <Route path="op/:opKey" element={<OperationPage />} />
         <Route path="jobs/:jobId" element={<ProcessingPage />} />
-        <Route path="history" element={<HistoryPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
