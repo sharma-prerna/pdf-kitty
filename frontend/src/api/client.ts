@@ -6,7 +6,7 @@ import type { ApiError } from '../types';
  * Nginx proxies /api to the backend container.
  */
 export const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 /** Normalise an Axios error into a readable message from the backend ErrorResponse. */
