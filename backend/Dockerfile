@@ -26,6 +26,12 @@ COPY --from=build /app/target/pdf-toolkit-backend.jar app.jar
 USER appuser
 # LibreOffice needs a writable HOME for its per-user profile.
 ENV HOME=/home/appuser
+# Enable the headless LibreOffice office manager (Word -> PDF) regardless of the
+# active Spring profile. LibreOffice is installed above; these env vars bind to
+# jodconverter.local.enabled / jodconverter.local.office-home via relaxed binding,
+# so the image converts standalone without docker-compose selecting the docker profile.
+ENV JODCONVERTER_LOCAL_ENABLED=true
+ENV JODCONVERTER_LOCAL_OFFICE_HOME=/usr/lib/libreoffice
 EXPOSE 8080
 ENV JAVA_OPTS=""
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
