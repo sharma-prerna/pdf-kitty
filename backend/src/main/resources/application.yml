@@ -57,7 +57,7 @@ app:
     allowed-origins:
       - http://localhost:3000
       - http://localhost:5173
-      - https://pdf-kitty-frontend.onrender.com
+      - https://pdf-kitty-frontend-womz.onrender.com
 
 logging:
   level:
