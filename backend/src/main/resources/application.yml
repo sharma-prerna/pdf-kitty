@@ -2,7 +2,7 @@ spring:
   application:
     name: pdf-toolkit-backend
   profiles:
-    active: local
+    active: ${SPRING_PROFILES_ACTIVE:local}
   servlet:
     multipart:
       max-file-size: ${APP_FILE_MAX_SIZE_MB:50}MB
