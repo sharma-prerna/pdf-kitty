@@ -42,7 +42,7 @@ public class PdfOperationServiceImpl implements PdfOperationService {
             OperationType.COMPRESS, Set.of("pdf"),
             OperationType.MERGE, Set.of("pdf"),
             OperationType.SPLIT, Set.of("pdf"),
-            OperationType.PDF_TO_WORD, Set.of("pdf"),
+            OperationType.WORD_TO_PDF, Set.of("docx", "doc"),
             OperationType.PDF_TO_IMAGE, Set.of("pdf"),
             OperationType.IMAGE_TO_PDF, Set.of("jpg", "jpeg", "png"));
 

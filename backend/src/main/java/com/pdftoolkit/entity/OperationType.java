@@ -7,7 +7,7 @@ public enum OperationType {
     COMPRESS,
     MERGE,
     SPLIT,
-    PDF_TO_WORD,
+    WORD_TO_PDF,
     IMAGE_TO_PDF,
     PDF_TO_IMAGE
 }

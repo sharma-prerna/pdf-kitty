@@ -36,13 +36,15 @@ public class AppProperties {
         /** Maximum accepted size per uploaded file, in megabytes. */
         private long maxSizeMb = 50;
         /** Allowed lower-case file extensions. */
-        private List<String> allowedExtensions = List.of("pdf", "jpg", "jpeg", "png");
+        private List<String> allowedExtensions = List.of("pdf", "jpg", "jpeg", "png", "doc", "docx");
         /** Allowed MIME types (validated against Tika-detected content). */
         private List<String> allowedMimeTypes = List.of(
                 "application/pdf",
                 "application/zip",
                 "image/jpeg",
-                "image/png");
+                "image/png",
+                "application/msword",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     }
 
     @Getter

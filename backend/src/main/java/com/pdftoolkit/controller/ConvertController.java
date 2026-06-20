@@ -27,10 +27,10 @@ public class ConvertController {
 
     private final PdfOperationService operationService;
 
-    @Operation(summary = "Convert a PDF to DOCX (text-only)")
-    @PostMapping(value = "/pdf-to-word", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<JobResponse> pdfToWord(@RequestParam("files") List<MultipartFile> files) {
-        return accepted(operationService.submit(OperationType.PDF_TO_WORD, files, Map.of()));
+    @Operation(summary = "Convert a DOCX into a single PDF (multipart order preserved)")
+    @PostMapping(value = "/word-to-pdf", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<JobResponse> wordToPdf(@RequestParam("files") List<MultipartFile> files) {
+        return accepted(operationService.submit(OperationType.WORD_TO_PDF, files, Map.of()));
     }
 
     @Operation(summary = "Combine images into a single PDF (multipart order preserved)")

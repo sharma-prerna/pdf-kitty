@@ -36,6 +36,10 @@ export interface OperationDef {
 
 const PDF = { 'application/pdf': ['.pdf'] };
 const IMAGES = { 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'] };
+const WORD = {
+  'application/msword': ['.doc'],
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+};
 
 export const OPERATIONS: OperationDef[] = [
   {
@@ -110,13 +114,13 @@ export const OPERATIONS: OperationDef[] = [
     ],
   },
   {
-    key: 'pdf-to-word',
-    endpoint: '/convert/pdf-to-word',
-    title: 'PDF to Word',
-    description: 'Extract a PDF into an editable DOCX (text).',
+    key: 'word-to-pdf',
+    endpoint: '/convert/word-to-pdf',
+    title: 'Word to PDF',
+    description: 'Convert a Word document (.doc/.docx) into one PDF.',
     Icon: ArticleIcon,
     color: '#0891b2',
-    accept: PDF,
+    accept: WORD,
     multiple: false,
     reorder: false,
     minFiles: 1,

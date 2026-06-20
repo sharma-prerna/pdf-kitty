@@ -11,12 +11,21 @@ RUN mvn -B -q clean package -DskipTests
 # ---- Runtime stage ----
 FROM eclipse-temurin:21-jre
 WORKDIR /app
-# wget is used by the docker-compose healthcheck
-RUN apt-get update && apt-get install -y --no-install-recommends wget \
+# wget: docker-compose healthcheck. libreoffice-writer + fonts: headless Word -> PDF
+# conversion (JODConverter drives the bundled soffice binary).
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        wget \
+        libreoffice-writer \
+        libreoffice-java-common \
+        fonts-liberation \
+        fontconfig \
     && rm -rf /var/lib/apt/lists/* \
-    && useradd -r -u 1001 appuser && mkdir -p /data/storage && chown -R appuser:appuser /data
+    && useradd -r -u 1001 -m -d /home/appuser appuser \
+    && mkdir -p /data/storage && chown -R appuser:appuser /data
 COPY --from=build /app/target/pdf-toolkit-backend.jar app.jar
 USER appuser
+# LibreOffice needs a writable HOME for its per-user profile.
+ENV HOME=/home/appuser
 EXPOSE 8080
 ENV JAVA_OPTS=""
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]

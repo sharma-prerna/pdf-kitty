@@ -1,6 +1,7 @@
 # Java / Maven
 backend/target/
-*.class
+backend/target/classes
+*.classes
 
 # Node / Vite
 frontend/node_modules/
@@ -19,3 +20,4 @@ storage/
 *.iml
 .DS_Store
 Thumbs.db
+*.class

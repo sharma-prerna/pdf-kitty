@@ -1,5 +1,7 @@
 package com.pdftoolkit.processor.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.pdftoolkit.processor.ProcessContext;
 import com.pdftoolkit.processor.ProcessInput;
 import com.pdftoolkit.processor.ProcessParams;
@@ -7,17 +9,13 @@ import com.pdftoolkit.processor.ProcessResult;
 import com.pdftoolkit.support.TestFiles;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.io.ByteArrayInputStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class ImageAndConversionProcessorTest {
 
@@ -47,20 +45,6 @@ class ImageAndConversionProcessorTest {
 
         assertThat(result.outputs()).hasSize(2);
         assertThat(result.outputs().get(0).mimeType()).isEqualTo("image/png");
-    }
-
-    @Test
-    void pdfToWordExtractsText(@TempDir Path dir) throws Exception {
-        Path pdf = TestFiles.pdfFile(dir, "in.pdf", 1);
-        ProcessContext context = new ProcessContext(UUID.randomUUID(),
-                List.of(new ProcessInput("in.pdf", pdf, "application/pdf")), Map.of());
-
-        ProcessResult result = new PdfToWordProcessor().process(context);
-
-        try (XWPFDocument docx = new XWPFDocument(new ByteArrayInputStream(result.outputs().get(0).content()))) {
-            String text = docx.getParagraphs().stream().map(p -> p.getText()).reduce("", String::concat);
-            assertThat(text).contains("Sample page 1");
-        }
     }
 
     @Test
