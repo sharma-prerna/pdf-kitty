@@ -22,9 +22,6 @@ export default function AppLayout() {
           <Button component={RouterLink} to="/" color={onHistory ? 'inherit' : 'primary'}>
             Tools
           </Button>
-          <Button component={RouterLink} to="/history" color={onHistory ? 'primary' : 'inherit'}>
-            History
-          </Button>
         </Toolbar>
       </AppBar>
       <Container maxWidth="lg" sx={{ py: 4 }}>
