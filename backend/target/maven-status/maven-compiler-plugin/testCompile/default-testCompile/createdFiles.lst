@@ -1,0 +1,7 @@
+com\pdftoolkit\integration\IntegrationTestBase.class
+com\pdftoolkit\processor\impl\MergeProcessorTest.class
+com\pdftoolkit\integration\MergeFlowIntegrationTest.class
+com\pdftoolkit\processor\impl\SplitProcessorTest.class
+com\pdftoolkit\processor\impl\ImageAndConversionProcessorTest.class
+com\pdftoolkit\service\impl\PdfOperationServiceImplTest.class
+com\pdftoolkit\support\TestFiles.class
