@@ -59,12 +59,3 @@ app:
 logging:
   level:
     com.pdftoolkit: INFO
-
-# LibreOffice is installed in the backend image, so enable the office manager here.
-jodconverter:
-  local:
-    enabled: ${JODCONVERTER_ENABLED:true}
-    office-home: ${LIBREOFFICE_HOME:/usr/lib/libreoffice}
-    max-tasks-per-process: 50
-    process-timeout: 120000
-    task-execution-timeout: 120000
