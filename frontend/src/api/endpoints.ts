@@ -25,4 +25,4 @@ export async function fetchJobHistory(page = 0, size = 50): Promise<Job[]> {
 }
 
 /** Absolute download URL for a completed job (single file or ZIP). */
-export const downloadUrl = (id: string): string => `/api/download/${id}`;
+export const downloadUrl = (id: string): string => `${import.meta.env.VITE_API_BASE_URL}/api/download/${id}`;
