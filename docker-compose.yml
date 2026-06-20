@@ -1,0 +1,92 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: pdftoolkit-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-pdftoolkit}
+      POSTGRES_USER: ${POSTGRES_USER:-pdftoolkit}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pdftoolkit}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-pdftoolkit}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - pdftoolkit-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: pdftoolkit-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - pdftoolkit-net
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pdftoolkit-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL:-jdbc:postgresql://postgres:5432/pdftoolkit}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-pdftoolkit}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-pdftoolkit}
+      SPRING_DATA_REDIS_HOST: ${SPRING_REDIS_HOST:-redis}
+      SPRING_DATA_REDIS_PORT: ${SPRING_REDIS_PORT:-6379}
+      STORAGE_BASE_DIR: ${STORAGE_BASE_DIR:-/data/storage}
+      APP_FILE_MAX_SIZE_MB: ${MAX_FILE_SIZE_MB:-50}
+      APP_RATE_LIMIT_REQUESTS: ${RATE_LIMIT_REQUESTS:-60}
+      APP_RATE_LIMIT_WINDOW_SECONDS: ${RATE_LIMIT_WINDOW_SECONDS:-60}
+      APP_SECURITY_JWT_SECRET: ${JWT_SECRET:-change-me-please-change-me-please-change-me-32+}
+      APP_SECURITY_JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS:-3600000}
+    volumes:
+      - storage-data:/data/storage
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+    networks:
+      - pdftoolkit-net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pdftoolkit-frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    networks:
+      - pdftoolkit-net
+
+volumes:
+  postgres-data:
+  redis-data:
+  storage-data:
+
+networks:
+  pdftoolkit-net:
+    driver: bridge
