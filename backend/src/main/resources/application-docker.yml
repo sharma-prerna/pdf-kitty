@@ -1,0 +1,15 @@
+# Overrides applied when SPRING_PROFILES_ACTIVE=docker.
+# Connection values come from environment variables defined in docker-compose.yml.
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pdftoolkit
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+app:
+  storage:
+    base-dir: ${STORAGE_BASE_DIR:/data/storage}
+  cors:
+    allowed-origins:
+      - http://localhost:3000

@@ -1,0 +1,67 @@
+spring:
+  application:
+    name: pdf-toolkit-backend
+  profiles:
+    active: local
+  servlet:
+    multipart:
+      max-file-size: ${APP_FILE_MAX_SIZE_MB:50}MB
+      max-request-size: ${APP_FILE_MAX_REQUEST_MB:200}MB
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pdftoolkit
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      # Flyway is the schema source of truth. 'none' avoids JDBC type-code mismatches on
+      # timestamptz columns during validation; switch to 'validate' once verified locally.
+      ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    schemas: public
+    default-schema: public
+    enabled: true
+    baseline-on-migrate: true
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST:localhost}
+      port: ${SPRING_DATA_REDIS_PORT:6379}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+app:
+  file:
+    max-size-mb: ${APP_FILE_MAX_SIZE_MB:50}
+  storage:
+    base-dir: ${STORAGE_BASE_DIR:./data/storage}
+  rate-limit:
+    enabled: true
+    requests: ${APP_RATE_LIMIT_REQUESTS:60}
+    window-seconds: ${APP_RATE_LIMIT_WINDOW_SECONDS:60}
+  security:
+    jwt-secret: ${APP_SECURITY_JWT_SECRET:change-me-please-change-me-please-change-me-32+}
+    jwt-expiration-ms: ${APP_SECURITY_JWT_EXPIRATION_MS:3600000}
+  cors:
+    allowed-origins:
+      - http://localhost:3000
+      - http://localhost:5173
+
+logging:
+  level:
+    com.pdftoolkit: INFO
