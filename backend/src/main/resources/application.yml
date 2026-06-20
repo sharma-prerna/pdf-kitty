@@ -8,9 +8,9 @@ spring:
       max-file-size: ${APP_FILE_MAX_SIZE_MB:50}MB
       max-request-size: ${APP_FILE_MAX_REQUEST_MB:200}MB
   datasource:
-    url: jdbc:postgresql://localhost:5432/pdftoolkit
-    username: postgres
-    password: postgres
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -27,10 +27,6 @@ spring:
     default-schema: public
     enabled: true
     baseline-on-migrate: true
-  data:
-    redis:
-      host: ${SPRING_DATA_REDIS_HOST:localhost}
-      port: ${SPRING_DATA_REDIS_PORT:6379}
 
 management:
   endpoints:
@@ -61,6 +57,7 @@ app:
     allowed-origins:
       - http://localhost:3000
       - http://localhost:5173
+      - https://pdf-kitty-frontend.onrender.com
 
 logging:
   level:
